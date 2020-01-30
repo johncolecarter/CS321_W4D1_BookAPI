@@ -22,7 +22,8 @@ namespace CS321_W4D1_BookAPI.Controllers
         {
             // TODO: convert domain models to apimodels
             var bookModels = _bookService
-                .GetAll();
+                .GetAll()
+                .ToApiModels();
 
             return Ok(bookModels);
         }
@@ -33,9 +34,25 @@ namespace CS321_W4D1_BookAPI.Controllers
         public IActionResult Get(int id)
         {
             // TODO: convert domain model to apimodel
-            var book = _bookService.Get(id);
-            if (book == null) return NotFound();
-            return Ok(book.ToApiModel());
+            var book = _bookService
+                .Get(id)
+                .ToApiModel();
+
+            if (book == null)
+                return NotFound();
+
+            return Ok(book);
+        }
+
+        // GET api/author/{authorId}/books
+        [HttpGet("/api/authors/{authorId}/books")]
+        public IActionResult GetBooksForAuthor(int authorId)
+        {
+            var bookModels = _bookService
+                .GetBooksForAuthor(authorId)
+                .ToApiModels();
+
+            return Ok(bookModels);
         }
 
         // create a new book
@@ -47,7 +64,7 @@ namespace CS321_W4D1_BookAPI.Controllers
             {
                 // TODO: convert apimodel to domain model
                 // add the new book
-                _bookService.Add(newBook);
+                _bookService.Add(newBook.ToDomainModel());
             }
             catch (System.Exception ex)
             {
@@ -62,8 +79,11 @@ namespace CS321_W4D1_BookAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] BookModel updatedBook)
         {
-            var book = _bookService.Update(updatedBook);
-            if (book == null) return NotFound();
+            var book = _bookService.Update(updatedBook.ToDomainModel());
+
+            if (book == null)
+                return NotFound();
+
             return Ok(book.ToApiModel());
         }
 
@@ -72,8 +92,12 @@ namespace CS321_W4D1_BookAPI.Controllers
         public IActionResult Delete(int id)
         {
             var book = _bookService.Get(id);
-            if (book == null) return NotFound();
+
+            if (book == null)
+                return NotFound();
+
             _bookService.Remove(book);
+
             return NoContent();
         }
     }
