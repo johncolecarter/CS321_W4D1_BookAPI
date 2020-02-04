@@ -12,15 +12,24 @@ namespace CS321_W4D1_BookAPI.ApiModels
         {
             return new PublisherModel
             {
-                // TODO: map Publisher properties to corresponding PublisherModel properties
+                Id = publisher.Id,
+                Name = publisher.Name,
+                FoundedYear = publisher.FoundedYear,
+                CountryOfOrigin = publisher.CountryOfOrigin,
+                HeadQuartersLocation = publisher.HeadQuartersLocation,
             };
         }
 
         public static Publisher ToDomainModel(this PublisherModel publisherModel)
         {
-            return new Publisher
-            {
-                // TODO: map PublisherModel properties to corresponding Publisher props
+        return new Publisher
+        {
+            Id = publisherModel.Id,
+            Name = publisherModel.Name,
+            FoundedYear  = publisherModel.FoundedYear,
+            CountryOfOrigin = publisherModel.CountryOfOrigin,
+            HeadQuartersLocation = publisherModel.HeadQuartersLocation,
+
             };
         }
 

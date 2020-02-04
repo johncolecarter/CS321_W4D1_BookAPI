@@ -48,6 +48,15 @@ namespace CS321_W4D1_BookAPI.Services
                 .ToList();
         }
 
+        public IEnumerable<Book> GetBooksForPublishers(int publisherId)
+        {
+            return _bookContext.Books
+                .Include(p => p.Publisher)
+                .Include(p => p.Author)
+                .Where(p => p.PublisherId == publisherId)
+                .ToList();
+        }
+
         public Book Update(Book updatedBook)
         {
             // get the ToDo object in the current list with this id 
@@ -78,7 +87,5 @@ namespace CS321_W4D1_BookAPI.Services
             _bookContext.Books.Remove(book);
             _bookContext.SaveChanges();
         }
-
-        // TODO: implement GetBooksForAuthor() method
     }
 }
